@@ -167,7 +167,7 @@ foreach ($colheaders as $by => $colhdr) {
   else {
     $queryfilter = "";
   }
-  $sql = 'SELECT id, created_at, refreshed_at, buysell, nick, host, amount, thing, price, otherthing, notes FROM orders ' . $queryfilter . ' ORDER BY id COLLATE NOCASE ASC';
+  $sql = 'SELECT id, created_at, refreshed_at, buysell, nick, host, amount, thing, price, otherthing, notes FROM orders ' . $queryfilter . ' ORDER BY random() COLLATE NOCASE ASC';
   $sth = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
   $sth->setFetchMode(PDO::FETCH_ASSOC);
   
