@@ -520,7 +520,15 @@ class OTCOrderBook(callbacks.Plugin):
         Web view: http://bitcoin-otc.com/vieworderbook.php
         """
         self.db.deleteExpired(self.registryValue('orderExpiry'))
-        results = self.db.getCurrencyBook(thing)
+        exact = False
+        for (option, arg) in optlist:
+            if option == 'exact':
+                exact = True
+        if exact:
+            search_string = thing
+        else:
+            search_string = '%' + thing + '%'
+        results = self.db.getCurrencyBook(search_string)
         if len(results) == 0:
             irc.error("No orders for this currency present in database.")
             return
@@ -550,7 +558,7 @@ class OTCOrderBook(callbacks.Plugin):
                   otherthing,
                   notes) in results]
         irc.replies(L, joiner=" || ")
-    book = wrap(book, ['something'])
+    book = wrap(book, [getopts({'exact': '',}), 'something'])
 
 Class = OTCOrderBook
 
